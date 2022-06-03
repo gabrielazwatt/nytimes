@@ -1,4 +1,4 @@
-# mostpopular NYTimes
+# Mostpopular NYTimes
 
 ## About
 Android App written in Kotlin using MVVM Clean and single activity Architecture. 
