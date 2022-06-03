@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NyTimes Most Popular</string>
+    <string name="network_error_occurred">Network error occurred</string>
+    <string name="unknown_error_occurred">Unknown error occurred</string>
+    <string name="retry">Retry</string>
+    <string name="search_article">Search Article</string>
+
+    <string name="check_this_article">Check this Article</string>
+    <string name="some_dummy_content">Some dummy content</string>
+</resources>

@@ -1,0 +1,130 @@
+//file:noinspection DifferentStdlibGradleVersion
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs'
+    id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion "30.0.3"
+
+    def localProperties = new Properties()
+    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
+    lintOptions {
+        checkReleaseBuilds true
+        abortOnError false
+    }
+
+    defaultConfig {
+        applicationId "com.mostpopular.nytimes"
+        minSdkVersion 21
+        targetSdkVersion 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "com.mostpopular.nytimes.HiltTestRunner"
+
+        //        javaCompileOptions {
+//            annotationProcessorOptions {
+//                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+//            }
+//        }
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField("String", "API_KEY", "\"" + localProperties['apiKey'] + "\"")
+        }
+        release {
+            minifyEnabled false
+            buildConfigField("String", "API_KEY", "\"" + localProperties['apiKey'] + "\"")
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    packagingOptions {
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
+    buildFeatures {
+        dataBinding true
+    }
+
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$version_kotlin"
+    implementation "androidx.core:core-ktx:$version_kotlin_ktx"
+    implementation "androidx.appcompat:appcompat:$version_androidx"
+    implementation "com.google.android.material:material:$version_android_material"
+    implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
+
+    // networking
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+
+    // JSON parser
+    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$version_moshi"
+
+    // Room dependency
+    implementation "androidx.room:room-runtime:$version_room"
+    kapt "androidx.room:room-compiler:$version_room"
+    implementation "androidx.room:room-ktx:$version_room"
+
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle"
+
+    //Dagger - Hilt
+    implementation "com.google.dagger:hilt-android:$version_hilt"
+    kapt "com.google.dagger:hilt-android-compiler:$version_hilt"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+    kapt "androidx.hilt:hilt-compiler:1.0.0"
+
+    // Image processing
+    implementation "io.coil-kt:coil:$version_coil"
+
+    // Local Unit Tests
+    testImplementation "junit:junit:$version_junit"
+    testImplementation "androidx.arch.core:core-testing:$version_core_test"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_kotlinx_coroutines_test"
+    testImplementation "com.google.truth:truth:$version_truth"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$version_mockwebserver"
+
+    // Instrumented Unit Tests
+    androidTestImplementation "androidx.arch.core:core-testing:$version_core_test"
+    androidTestImplementation "com.google.truth:truth:$version_truth"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_kotlinx_coroutines_test"
+    androidTestImplementation "androidx.test.ext:junit:$version_androidx_junit_ext"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$version_hilt"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$version_hilt"
+    androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$version_hilt"
+    androidTestImplementation "androidx.navigation:navigation-testing:$version_navigation_testing"
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:$version_espresso_contrib") {
+        exclude group: 'org.checkerframework'
+        exclude module: "protobuf-lite"
+    }
+
+}
